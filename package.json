@@ -1,0 +1,29 @@
+{
+  "name": "@brngdsn/shmr",
+  "version": "0.2.1",
+  "type": "module",
+  "description": "simple hot module reloard",
+  "main": "src/index.js",
+  "bin": {
+    "shmr": "src/index.js"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brngdsn/shmr.git"
+  },
+  "keywords": [
+    "hmr"
+  ],
+  "author": "brn.gdsn@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brngdsn/shmr/issues"
+  },
+  "homepage": "https://github.com/brngdsn/shmr#readme",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
