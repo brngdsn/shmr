@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Static Server with Hot Module Reload (HMR)</title>
+    <style>
+        /* Reset some default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        /* Sidebar styling */
+        nav {
+            width: 250px;
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        nav h2 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        nav ul li a:hover {
+            background: #575757;
+        }
+
+        /* Main content styling */
+        main {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+            background-color: #fff;
+            overflow-y: auto;
+        }
+
+        main h1, main h2, main h3, main h4, main h5, main h6 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        main p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        main pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-left: 3px solid #333;
+            overflow-x: auto;
+        }
+
+        main code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        main ul, main ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        /* Footer styling */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            main {
+                margin-left: 0;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav>
+        <h2>Documentation</h2>
+        <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#example">Example</a></li>
+            <li><a href="#development">Development</a></li>
+            <li><a href="#license">License</a></li>
+            <li><a href="#contributing">Contributing</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <h1 id="top">Simple Static Server with Hot Module Reload (HMR)</h1>
+        <p>
+            A lightweight Node.js HTTP server for serving static files with built-in Hot Module Reload (HMR) support. Ideal for web development workflows, this tool automatically reloads your browser when you make changes to your files, enhancing productivity and streamlining the development process.
+        </p>
+
+        <h2 id="features">Features</h2>
+        <ul>
+            <li><strong>Static File Serving</strong>: Serves HTML, CSS, JavaScript, JSON, images, and other static assets.</li>
+            <li><strong>Hot Module Reload (HMR)</strong>: Automatically reloads the browser when file changes are detected.</li>
+            <li><strong>WebSocket Integration</strong>: Utilizes WebSockets to communicate file changes to the client.</li>
+            <li><strong>Easy to Use</strong>: Simple setup with minimal configuration.</li>
+            <li><strong>Global Installation</strong>: Install globally via npm for easy access from any project.</li>
+        </ul>
+
+        <h2 id="installation">Installation</h2>
+        <p>Ensure you have <a href="https://nodejs.org/" target="_blank">Node.js</a> installed on your machine.</p>
+        <p>Install the package globally using npm:</p>
+        <pre><code>npm install -g shmr</code></pre>
+
+        <h2 id="usage">Usage</h2>
+        <p>Navigate to your project's root directory and start the server:</p>
+        <pre><code>shmr</code></pre>
+        <p>By default, the server runs at <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>.</p>
+
+        <h3>Options</h3>
+        <p>
+            Currently, the server runs on port <code>8080</code> by default. To customize the port or add additional configurations, you can modify the source code as needed.
+        </p>
+
+        <h2 id="how-it-works">How It Works</h2>
+        <ol>
+            <li>
+                <strong>HTTP Server</strong>: Serves static files from the current directory. When a request is made, the server responds with the requested file. If an HTML file is requested, it injects a client-side HMR script before the closing <code>&lt;/body&gt;</code> tag.
+            </li>
+            <li>
+                <strong>HMR Client Script</strong>: The injected script establishes a WebSocket connection to the server. It listens for <code>reload</code> messages and refreshes the page when a change is detected.
+            </li>
+            <li>
+                <strong>WebSocket Server</strong>: Manages WebSocket connections with clients. When a file change is detected, it broadcasts a <code>reload</code> message to all connected clients.
+            </li>
+            <li>
+                <strong>File Watching</strong>: Monitors the current directory recursively for any file changes (excluding hidden files). Upon detecting a change, it logs the event and triggers a browser reload via WebSocket.
+            </li>
+        </ol>
+
+        <h2 id="example">Example</h2>
+        <ol>
+            <li>
+                <strong>Start the Server</strong>:
+                <pre><code>shmr</code></pre>
+            </li>
+            <li>
+                <strong>Open Your Browser</strong>:
+                Navigate to <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>. Your static site should load with HMR enabled.
+            </li>
+            <li>
+                <strong>Make Changes</strong>:
+                Modify any HTML, CSS, or JavaScript files in your project. The browser will automatically reload to reflect the changes.
+            </li>
+        </ol>
+
+        <h2 id="development">Development</h2>
+        <p>If you wish to contribute or modify the server, follow these steps:</p>
+        <ol>
+            <li>
+                <strong>Clone the Repository</strong>:
+                <pre><code>git clone https://github.com/brngdsn/shmr.git</code></pre>
+            </li>
+            <li>
+                <strong>Navigate to the Project Directory</strong>:
+                <pre><code>cd shmr</code></pre>
+            </li>
+            <li>
+                <strong>Install Dependencies</strong>:
+                <pre><code>npm install</code></pre>
+            </li>
+            <li>
+                <strong>Run Locally</strong>:
+                <pre><code>node src/index.js</code></pre>
+            </li>
+        </ol>
+
+        <h2 id="license">License</h2>
+        <p>
+            MIT © <a href="https://github.com/brngdsn" target="_blank">brngdsn</a>
+        </p>
+
+        <h2 id="contributing">Contributing</h2>
+        <p>
+            Contributions are welcome! Please open an issue or submit a pull request for any bugs, features, or enhancements.
+        </p>
+
+        <hr>
+
+        <p><em>
+            This project is a simple static server with HMR capabilities, designed to improve your web development experience by providing instant feedback on file changes.
+        </em></p>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 brngdsn | <a href="#top" style="color: #fff; text-decoration: underline;">Back to Top</a>
+    </footer>
+
+</body>
+</html>
+
